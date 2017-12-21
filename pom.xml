@@ -41,7 +41,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -58,7 +58,7 @@
 							</artifactSet>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>application.conf</resource>
+									<resource>src/main/resources/application.conf</resource>
 								</transformer>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>com.sirolf2009.serenity.collector.Collector</mainClass>
