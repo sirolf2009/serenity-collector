@@ -24,6 +24,7 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtend.lib.annotations.ToString
 import java.util.Collection
 import javax.persistence.Embeddable
+import com.sirolf2009.commonwealth.timeseries.IPoint
 
 @FinalFieldsConstructor class CollectorDatabase extends AbstractActor {
 	
@@ -48,9 +49,12 @@ import javax.persistence.Embeddable
 			database.transaction.commit()
 		]).match(ITrade, [
 			database.transaction.begin()
-			database.persist(new TradeWrapper() => [wrapper|
-				wrapper.timestamp = it.point.date
-				wrapper.trade = it
+			database.persist(new PersistableTrade() => [persist|
+				persist.point = new PersistablePoint() => [pointpersist|
+					pointpersist.x = point.x
+					pointpersist.y = point.y
+				]
+				persist.amount = amount
 			])
 			database.transaction.commit()
 		]).match(GetOrderbook, [
@@ -99,10 +103,14 @@ import javax.persistence.Embeddable
 		}
 	}
 	
-	@Entity @Accessors @ToString static class TradeWrapper {
+	@Entity @Accessors @ToString static class PersistableTrade implements ITrade {
 		@Id @GeneratedValue var long ID
-		@Temporal(TIMESTAMP) @Index var Date timestamp
-		@Embedded var ITrade trade
+		var IPoint point
+		var Number amount
+	}
+	@Accessors @Embeddable static class PersistablePoint implements IPoint {
+		var Number x
+		var Number y
 	}
 	
 }
