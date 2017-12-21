@@ -24,6 +24,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 	new(String symbol) {
 		this.symbol = symbol
 		this.subscriptions = new ArrayList()
+	}
+	
+	override preStart() throws Exception {
 		connect()
 	}
 

@@ -29,6 +29,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 		this.precision = precision
 		this.frequency = frequency
 		this.subscriptions = new ArrayList()
+	}
+	
+	override preStart() throws Exception {
 		connect()
 	}
 
@@ -56,6 +59,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 		client.send(new SubscribeTrades(symbol))
 		log.info("Connected")
 	}
+	
 
 	override createReceive() {
 		return receiveBuilder().match(SubscribeMe, [
