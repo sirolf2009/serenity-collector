@@ -135,6 +135,11 @@
 			<version>2.5.8</version>
 		</dependency>
 		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-testkit_2.12</artifactId>
+			<version>2.5.8</version>
+		</dependency>
+		<dependency>
 			<groupId>com.objectdb</groupId>
 			<artifactId>objectdb</artifactId>
 			<version>2.6.1</version>
