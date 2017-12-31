@@ -43,6 +43,7 @@ class Collector15MinFile extends AbstractActor {
 	def switchWriter() {
 		if(getCalendar().minute != currentQuarter.get()) {
 			currentFile.getAndSet(getCalendar().newWriter).close()
+			currentQuarter.set(getCalendar().minute)
 		}
 	}
 	
