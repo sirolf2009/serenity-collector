@@ -69,11 +69,17 @@ class Collector15MinFile extends AbstractActor {
 	}
 
 	def writeOrderbook(IOrderbook orderbook) {
-		currentFile.get().println('''o,«orderbook.timestamp.time»,«orderbook.asks.map['''«price»:«amount»'''].join(";")»,«orderbook.bids.map['''«price»:«amount»'''].join(";")»''')
+		currentFile.get() => [
+			println('''o,«orderbook.timestamp.time»,«orderbook.asks.map['''«price»:«amount»'''].join(";")»,«orderbook.bids.map['''«price»:«amount»'''].join(";")»''')
+			flush()
+		]
 	}
 
 	def writeTrade(ITrade trade) {
-		currentFile.get().println('''t,«trade.point.x»,«trade.point.y»,«trade.amount»''')
+		currentFile.get() => [
+			println('''t,«trade.point.x»,«trade.point.y»,«trade.amount»''')
+			flush()
+		]
 	}
 
 	def getNewWriter(Calendar cal) {
