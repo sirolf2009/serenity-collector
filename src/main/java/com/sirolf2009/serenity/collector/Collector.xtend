@@ -3,25 +3,29 @@ package com.sirolf2009.serenity.collector
 import akka.actor.AbstractActor
 import akka.actor.ActorSystem
 import akka.actor.Props
-import com.sirolf2009.bitfinex.wss.model.SubscribeOrderbook
 import com.sirolf2009.commonwealth.ITick
 import com.sirolf2009.util.akka.ActorHelper
 import com.typesafe.config.ConfigFactory
+import info.bitrich.xchangestream.core.StreamingExchangeFactory
+import info.bitrich.xchangestream.gdax.GDAXStreamingExchange
 import java.io.File
 import java.util.Date
 import java.util.concurrent.CountDownLatch
 import java.util.function.Consumer
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.knowm.xchange.currency.CurrencyPair
 
 class Collector {
 
 	def static void main(String[] args) {
+		val exchange = StreamingExchangeFactory.INSTANCE.createExchange(GDAXStreamingExchange.name)
+		exchange.connect().blockingAwait()
 		val system = ActorSystem.create("Collector", ConfigFactory.parseFile(new File(Collector.classLoader.getResource("host.conf").file)))
-		val orderbookCollector = system.actorOf(CollectorOrderbook.props("BTCUSD", SubscribeOrderbook.PREC_PRECISE, SubscribeOrderbook.FREQ_REALTIME), "OrderbookCollector")
-		val tradeCollector = system.actorOf(CollectorTrades.props("BTCUSD"), "TradeCollector")
-		val databaseCollector = system.actorOf(Props.create(Collector15MinFile, [new Collector15MinFile(new File("BTCUSD"))]), "Database")
-		orderbookCollector.tell(new SubscribeMe(), databaseCollector)
-		tradeCollector.tell(new SubscribeMe(), databaseCollector)
+//		val orderbookCollector = system.actorOf(CollectorOrderbook.props("BTCUSD", SubscribeOrderbook.PREC_PRECISE, SubscribeOrderbook.FREQ_REALTIME), "OrderbookCollector")
+//		val tradeCollector = system.actorOf(CollectorTrades.props("BTCUSD"), "TradeCollector")
+		val gdaxCollector = system.actorOf(Props.create(CollectorXChange, [new CollectorXChange(exchange, CurrencyPair.BTC_EUR)]), "gdax-collector")
+		val databaseCollector = system.actorOf(Props.create(Collector15MinFile, [new Collector15MinFile(new File("BTCEUR"))]), "Database")
+		gdaxCollector.tell(new SubscribeMe(), databaseCollector)
 	}
 	
 	def static getData(String host, Date from, Date to, Consumer<ITick> tickConsumer) {

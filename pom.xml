@@ -46,6 +46,11 @@
 			<name>ObjectDB Repository</name>
 			<url>http://m2.objectdb.com</url>
 		</repository>
+		<repository>
+			<id>sonatype-oss-snapshot</id>
+			<snapshots />
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -98,6 +103,16 @@
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-testkit_2.12</artifactId>
 			<version>2.5.8</version>
+		</dependency>
+		<dependency>
+			<groupId>info.bitrich.xchange-stream</groupId>
+			<artifactId>xchange-stream-core</artifactId>
+			<version>4.2.4-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>info.bitrich.xchange-stream</groupId>
+			<artifactId>xchange-gdax</artifactId>
+			<version>4.2.4-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

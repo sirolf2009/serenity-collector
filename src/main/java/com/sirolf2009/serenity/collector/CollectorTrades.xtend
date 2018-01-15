@@ -58,7 +58,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 		return receiveBuilder().match(SubscribeMe, [
 			subscriptions.add(sender())
 			log.info(sender()+" subscribed")
-		]).match(SubscribeMe, [
+		]).match(UnsubscribeMe, [
 			subscriptions.remove(sender())
 			log.info(sender()+" unsubscribed")
 		]).build()
